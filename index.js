@@ -2,20 +2,22 @@
 // const express = require('express');
 
 // hacer el nuevo import
-import serverless from 'serverless-http';
-import Express from 'express';
-import Cors from 'cors';
-import dotenv from 'dotenv';
-import { conectarBD } from './db/db.js';
-import jwt from 'express-jwt';
-import jwks from 'jwks-rsa';
+import serverless from "serverless-http";
+import Express from "express";
+import Cors from "cors";
+import dotenv from "dotenv";
+import { conectarBD } from "./db/db.js";
+import jwt from "express-jwt";
+import jwks from "jwks-rsa";
 
-import rutasVehiculo from './views/vehiculos/rutas.js';
-import rutasUsuario from './views/usuarios/rutas.js';
-import rutasVenta from './views/ventas/rutas.js';
-import autorizacionEstadoUsuario from './middleware/autorizacionEstadoUsuario.js';
+import rutasVehiculo from "./views/vehiculos/rutas.js";
+import rutasUsuario from "./views/usuarios/rutas.js";
+import rutasHistorico from "./views/historicos/rutas.js";
+import rutasSolicitud from "./views/solicitudes/rutas.js";
+import rutasVenta from "./views/ventas/rutas.js";
+import autorizacionEstadoUsuario from "./middleware/autorizacionEstadoUsuario.js";
 
-dotenv.config({ path: './.env' });
+dotenv.config({ path: "./.env" });
 
 const port = process.env.PORT || 5000;
 
@@ -29,11 +31,12 @@ var jwtCheck = jwt({
     cache: true,
     rateLimit: true,
     jwksRequestsPerMinute: 5,
-    jwksUri: 'https://misiontic-concesionario.us.auth0.com/.well-known/jwks.json',
+    jwksUri:
+      "https://proyecto-final-electronica.us.auth0.com/.well-known/jwks.json",
   }),
-  audience: 'api-autenticacion-concesionario-mintic',
-  issuer: 'https://misiontic-concesionario.us.auth0.com/',
-  algorithms: ['RS256'],
+  audience: "api-cofre-inteligente-administracion-llaves",
+  issuer: "https://proyecto-final-electronica.us.auth0.com/",
+  algorithms: ["RS256"],
 });
 
 // 4 y 5: enviarle el token a auth0 para que devuelva si es valido o no
@@ -44,6 +47,8 @@ app.use(autorizacionEstadoUsuario);
 app.use(rutasVehiculo);
 app.use(rutasUsuario);
 app.use(rutasVenta);
+app.use(rutasHistorico);
+app.use(rutasSolicitud);
 
 const main = () => {
   return app.listen(port, () => {
@@ -52,7 +57,7 @@ const main = () => {
 };
 
 const index = {
-  handler: serverless(conectarBD(main)),
+  handler: conectarBD(main),
 };
 
 export default index;

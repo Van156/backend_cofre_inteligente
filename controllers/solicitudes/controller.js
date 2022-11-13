@@ -2,10 +2,14 @@ import { ObjectId } from "mongodb";
 import { getDB } from "../../db/db.js";
 import jwt_decode from "jwt-decode";
 
-const queryAllUsers = async (callback) => {
+const queryAllSolictuds = async (callback) => {
   const baseDeDatos = getDB();
   console.log("query");
-  await baseDeDatos.collection("usuarios").find({}).limit(50).toArray(callback);
+  await baseDeDatos
+    .collection("solicitudes")
+    .find({})
+    .limit(50)
+    .toArray(callback);
 };
 
 const crearUsuario = async (datosUsuario, callback) => {
@@ -13,11 +17,11 @@ const crearUsuario = async (datosUsuario, callback) => {
   await baseDeDatos.collection("usuarios").insertOne(datosUsuario, callback);
 };
 
-const consultarUsuario = async (id, callback) => {
+const consultarSolicitudesUsuario = async (id, callback) => {
   const baseDeDatos = getDB();
   await baseDeDatos
     .collection("usuarios")
-    .findOne({ _id: new ObjectId(id) }, callback);
+    .find({ _id: new ObjectId(id) }, callback);
 };
 
 const consultarOCrearUsuario = async (req, callback) => {
@@ -40,29 +44,22 @@ const consultarOCrearUsuario = async (req, callback) => {
       } else {
         // 7.2. si el usuario no esta en la bd, lo crea y devuelve la info
         user.auth0ID = user._id;
-
         delete user._id;
         user.rol = "sin rol";
         user.estado = "pendiente";
-        //añadir nuevos campos
-        user.username = "";
-        user.password = "";
-        user.faltas_leve = 0;
-        user.keyaccess = [];
-
         await crearUsuario(user, (err, respuesta) => callback(err, user));
       }
     });
 };
 
-const editarUsuario = async (id, edicion, callback) => {
+const editarSolicitud = async (id, edicion, callback) => {
   const filtroUsuario = { _id: new ObjectId(id) };
   const operacion = {
     $set: edicion,
   };
   const baseDeDatos = getDB();
   await baseDeDatos
-    .collection("usuarios")
+    .collection("solicitudes")
     .findOneAndUpdate(
       filtroUsuario,
       operacion,
@@ -78,10 +75,10 @@ const eliminarUsuario = async (id, callback) => {
 };
 
 export {
-  queryAllUsers,
+  queryAllSolictuds,
   crearUsuario,
-  consultarUsuario,
-  editarUsuario,
+  consultarSolicitudesUsuario,
+  editarSolicitud,
   eliminarUsuario,
   consultarOCrearUsuario,
 };

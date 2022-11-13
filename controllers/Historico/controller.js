@@ -8,6 +8,16 @@ const queryAllUsers = async (callback) => {
   await baseDeDatos.collection("usuarios").find({}).limit(50).toArray(callback);
 };
 
+const queryAllHistoric = async (callback) => {
+  const baseDeDatos = getDB();
+  console.log("query");
+  await baseDeDatos
+    .collection("historial")
+    .find({})
+    .sort("fecha", -1)
+    .toArray(callback);
+};
+
 const crearUsuario = async (datosUsuario, callback) => {
   const baseDeDatos = getDB();
   await baseDeDatos.collection("usuarios").insertOne(datosUsuario, callback);
@@ -40,29 +50,22 @@ const consultarOCrearUsuario = async (req, callback) => {
       } else {
         // 7.2. si el usuario no esta en la bd, lo crea y devuelve la info
         user.auth0ID = user._id;
-
         delete user._id;
         user.rol = "sin rol";
         user.estado = "pendiente";
-        //añadir nuevos campos
-        user.username = "";
-        user.password = "";
-        user.faltas_leve = 0;
-        user.keyaccess = [];
-
         await crearUsuario(user, (err, respuesta) => callback(err, user));
       }
     });
 };
 
-const editarUsuario = async (id, edicion, callback) => {
+const editarHistorico = async (id, edicion, callback) => {
   const filtroUsuario = { _id: new ObjectId(id) };
   const operacion = {
     $set: edicion,
   };
   const baseDeDatos = getDB();
   await baseDeDatos
-    .collection("usuarios")
+    .collection("historial")
     .findOneAndUpdate(
       filtroUsuario,
       operacion,
@@ -79,9 +82,10 @@ const eliminarUsuario = async (id, callback) => {
 
 export {
   queryAllUsers,
+  queryAllHistoric,
   crearUsuario,
   consultarUsuario,
-  editarUsuario,
+  editarHistorico,
   eliminarUsuario,
   consultarOCrearUsuario,
 };

@@ -1,7 +1,7 @@
-import { MongoClient } from 'mongodb';
-import dotenv from 'dotenv';
+import { MongoClient } from "mongodb";
+import dotenv from "dotenv";
 
-dotenv.config({ path: './.env' });
+dotenv.config({ path: "./.env" });
 
 const stringConexion = process.env.DATABASE_URL;
 
@@ -15,11 +15,12 @@ let baseDeDatos;
 const conectarBD = (callback) => {
   client.connect((err, db) => {
     if (err) {
-      console.error('Error conectando a la base de datos');
-      return 'error';
+      console.log("este es el errror", err);
+      console.error("Error conectando a la base de datos");
+      return "error";
     }
-    baseDeDatos = db.db('concesionario');
-    console.log('baseDeDatos exitosa');
+    baseDeDatos = db.db("cofre-llaves");
+    console.log("baseDeDatos exitosa");
     return callback();
   });
 };
