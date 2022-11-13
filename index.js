@@ -10,11 +10,10 @@ import { conectarBD } from "./db/db.js";
 import jwt from "express-jwt";
 import jwks from "jwks-rsa";
 
-import rutasVehiculo from "./views/vehiculos/rutas.js";
 import rutasUsuario from "./views/usuarios/rutas.js";
 import rutasHistorico from "./views/historicos/rutas.js";
 import rutasSolicitud from "./views/solicitudes/rutas.js";
-import rutasVenta from "./views/ventas/rutas.js";
+
 import autorizacionEstadoUsuario from "./middleware/autorizacionEstadoUsuario.js";
 
 dotenv.config({ path: "./.env" });
@@ -44,9 +43,8 @@ app.use(jwtCheck);
 
 app.use(autorizacionEstadoUsuario);
 
-app.use(rutasVehiculo);
 app.use(rutasUsuario);
-app.use(rutasVenta);
+
 app.use(rutasHistorico);
 app.use(rutasSolicitud);
 
