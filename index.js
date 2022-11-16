@@ -2,7 +2,7 @@
 // const express = require('express');
 
 // hacer el nuevo import
-import serverless from "serverless-http";
+
 import Express from "express";
 import Cors from "cors";
 import dotenv from "dotenv";
