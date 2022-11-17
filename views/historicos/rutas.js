@@ -7,7 +7,7 @@ import {
   eliminarUsuario,
   consultarUsuario,
   consultarOCrearUsuario,
-} from "../../controllers/historico/controller.js";
+} from "../../controllers/Historico/controller.js";
 
 const rutasHistorico = Express.Router();
 
