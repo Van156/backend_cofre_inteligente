@@ -4,17 +4,18 @@ import jwt_decode from "jwt-decode";
 
 const queryAllSolictuds = async (callback) => {
   const baseDeDatos = getDB();
-  console.log("query");
+  console.log("Estoy aqui ......");
   await baseDeDatos
     .collection("solicitudes")
     .find({})
-    .limit(50)
+    .sort("fecha", -1)
     .toArray(callback);
 };
 
-const crearUsuario = async (datosUsuario, callback) => {
+const crearSolicitud = async (datosUsuario, callback) => {
   const baseDeDatos = getDB();
-  await baseDeDatos.collection("usuarios").insertOne(datosUsuario, callback);
+  datosUsuario.fecha = new Date();
+  await baseDeDatos.collection("solicitudes").insertOne(datosUsuario, callback);
 };
 
 const consultarSolicitudesUsuario = async (id, callback) => {
@@ -76,7 +77,7 @@ const eliminarUsuario = async (id, callback) => {
 
 export {
   queryAllSolictuds,
-  crearUsuario,
+  crearSolicitud,
   consultarSolicitudesUsuario,
   editarSolicitud,
   eliminarUsuario,

@@ -47,6 +47,7 @@ const consultarOCrearUsuario = async (req, callback) => {
         //añadir nuevos campos
         user.username = "";
         user.password = "";
+        user.password_coaccion = "";
         user.faltas_leve = 0;
         user.keyaccess = [];
 

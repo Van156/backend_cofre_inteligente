@@ -1,7 +1,7 @@
 import Express from "express";
 import {
   queryAllSolictuds,
-  crearUsuario,
+  crearSolicitud,
   editarSolicitud,
   eliminarUsuario,
   consultarSolicitudesUsuario,
@@ -24,7 +24,7 @@ rutasSolicitudes.route("/solicitudes").get((req, res) => {
 });
 
 rutasSolicitudes.route("/solicitudes").post((req, res) => {
-  crearUsuario(req.body, genercCallback(res));
+  crearSolicitud(req.body, genercCallback(res));
 });
 
 rutasSolicitudes.route("/solicitudes/self").get((req, res) => {
